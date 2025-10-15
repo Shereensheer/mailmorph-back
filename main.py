@@ -21,7 +21,7 @@ from services.ai_writer import generate_email, generate_smart_email, score_lead
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"  # for localhost dev
 TOKEN_PATH = "token.pkl"
 CLIENT_SECRET_FILE = "client_secret.json"
-FRONTEND_URL = "https://mailmorph-com.vercel.app/"
+FRONTEND_URL = "http://localhost:3000"
 LEADS_FILE = "leads.pkl"
 USERS_FILE = "users.json"
 UPLOAD_DIR = "uploads"
@@ -32,7 +32,7 @@ os.makedirs(UPLOAD_DIR, exist_ok=True)
 app = FastAPI(title="MailMorph API")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # restrict in production
+    allow_origins=["https://mailmorph-com.vercel.app"],  # restrict in production
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
