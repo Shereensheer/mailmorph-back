@@ -1,3 +1,5 @@
+
+
 import os
 import pickle
 import json
@@ -18,10 +20,10 @@ from services import email_storage
 from services.ai_writer import generate_email, generate_smart_email, score_lead
 
 # ------------------- Config -------------------
- # for localhost dev
+os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"  # for localhost dev
 TOKEN_PATH = "token.pkl"
 CLIENT_SECRET_FILE = "client_secret.json"
-FRONTEND_URL = "https://mailmorph-com.vercel.app"
+FRONTEND_URL = "http://localhost:3000"
 LEADS_FILE = "leads.pkl"
 USERS_FILE = "users.json"
 UPLOAD_DIR = "uploads"
@@ -32,7 +34,7 @@ os.makedirs(UPLOAD_DIR, exist_ok=True)
 app = FastAPI(title="MailMorph API")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://mailmorph-com.vercel.app"],  # restrict in production
+    allow_origins=["*"],  # restrict in production
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -115,7 +117,7 @@ def auth_login():
             "https://www.googleapis.com/auth/gmail.modify",
             "https://www.googleapis.com/auth/gmail.send",
         ],
-        redirect_uri="https://mailmorph-back-production.up.railway.app/auth/callback",
+        redirect_uri="http://localhost:8000/auth/callback",
     )
     auth_url, _ = flow.authorization_url(
         access_type="offline", include_granted_scopes="true"
@@ -132,7 +134,7 @@ def auth_callback(request: Request):
             "https://www.googleapis.com/auth/gmail.modify",
             "https://www.googleapis.com/auth/gmail.send",
         ],
-        redirect_uri="https://mailmorph-back-production.up.railway.app/auth/callback",
+        redirect_uri="http://localhost:8000/auth/callback",
     )
     try:
         flow.fetch_token(authorization_response=str(request.url))
@@ -157,7 +159,7 @@ def auth_callback(request: Request):
             users.append(new_user)
             save_users(users)
 
-        return RedirectResponse("https://mailmorph-com.vercel.app")
+        return RedirectResponse(FRONTEND_URL)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"OAuth Callback Error: {str(e)}")
 
@@ -499,8 +501,8 @@ async def create_checkout(data: CheckoutRequest):
             payment_method_types=["card"],
             line_items=line_items,
             mode="payment",
-            success_url="https://mailmorph-com.vercel.app/success",
-            cancel_url="https://mailmorph-com.vercel.app/cart",
+            success_url="http://localhost:3000/success",
+            cancel_url="http://localhost:3000/cart",
             customer_email=data.email,
         )
         return {"checkout_url": session.url}
@@ -508,7 +510,14 @@ async def create_checkout(data: CheckoutRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+# from services.ai_writer import predict_inbox
 
+
+# @app.post("/predict-inbox")
+# async def predict_inbox_route(payload: dict = Body(...)):
+#     subject = payload.get("subject", "")
+#     body = payload.get("body", "")
+#     return await predict_inbox(subject, body)
 
 
 import os
@@ -626,7 +635,7 @@ def auth_login():
             "https://www.googleapis.com/auth/gmail.modify",
             "https://www.googleapis.com/auth/gmail.send",
         ],
-        redirect_uri="https://mailmorph-back-production.up.railway.app/auth/callback",
+        redirect_uri="http://localhost:8000/auth/callback",
     )
     auth_url, _ = flow.authorization_url(
         access_type="offline", include_granted_scopes="true"
@@ -643,7 +652,7 @@ def auth_callback(request: Request):
             "https://www.googleapis.com/auth/gmail.modify",
             "https://www.googleapis.com/auth/gmail.send",
         ],
-        redirect_uri="https://mailmorph-back-production.up.railway.app/auth/callback",
+        redirect_uri="http://localhost:8000/auth/callback",
     )
     try:
         flow.fetch_token(authorization_response=str(request.url))
@@ -668,7 +677,7 @@ def auth_callback(request: Request):
             users.append(new_user)
             save_users(users)
 
-        return RedirectResponse("https://mailmorph-com.vercel.app")
+        return RedirectResponse(FRONTEND_URL)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"OAuth Callback Error: {str(e)}")
 
@@ -1150,7 +1159,6 @@ def delete_reply(thread_id: str):
 def clear_replies():
     save_replies([])
     return {"detail": "All replies cleared"}
-
 
 
 
