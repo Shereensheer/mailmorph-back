@@ -115,7 +115,7 @@ def auth_login():
             "https://www.googleapis.com/auth/gmail.modify",
             "https://www.googleapis.com/auth/gmail.send",
         ],
-        redirect_uri="https://mailmorph-back-production.up.railway.app/auth/callback",
+        redirect_uri="https://mailmorph-com.vercel.app/auth/callback",
     )
     auth_url, _ = flow.authorization_url(
         access_type="offline", include_granted_scopes="true"
@@ -132,7 +132,7 @@ def auth_callback(request: Request):
             "https://www.googleapis.com/auth/gmail.modify",
             "https://www.googleapis.com/auth/gmail.send",
         ],
-        redirect_uri="https://mailmorph-back-production.up.railway.app/auth/callback",
+        redirect_uri="https://mailmorph-com.vercel.app/auth/callback",
     )
     try:
         flow.fetch_token(authorization_response=str(request.url))
