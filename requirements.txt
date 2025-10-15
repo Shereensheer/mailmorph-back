@@ -1,0 +1,32 @@
+# streamlit
+# python-dotenv
+# openai
+# google-api-python-client
+# google-auth
+# google-auth-oauthlib
+# fastapi==0.115.0
+# uvicorn[standard]==0.30.5
+# google-auth-oauthlib==1.2.1
+# google-api-python-client==2.142.0
+# google-auth==2.34.0
+# python-dotenv==1.0.1
+# tensorflow==2.12.0
+
+# protobuf==4.25.1
+# pydantic[email]
+# apscheduler
+
+fastapi==0.115.0
+uvicorn==0.30.5
+python-dotenv==1.0.1
+pydantic[email]
+APScheduler==3.10.4
+protobuf>=5.28.0
+google-auth==2.34.0
+google-auth-oauthlib==1.2.1
+google-api-python-client==2.142.0
+tensorflow==2.20.0
+openai
+
+openai-agents
+

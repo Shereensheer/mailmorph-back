@@ -1,0 +1,25 @@
+[project]
+name = "emailagent"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "agents>=1.4.0",
+    "apscheduler>=3.11.0",
+    "fastapi==0.115.0",
+    "google-api-python-client>=2.142.0",
+    "google-auth>=2.34.0",
+    "google-auth-oauthlib>=1.2.1",
+    "httpx>=0.28.1",
+    "openai>=1.99.9",
+    "openai-agents>=0.2.9",
+    "polar-sdk>=0.23.0",
+    "protobuf==6.31.1",
+    "pydantic[email]>=2.11.7",
+    "python-dotenv>=1.0.1",
+    "streamlit>=1.48.1",
+    "stripe>=12.5.1",
+    "tensorflow>=2.20.0",
+    "uvicorn[standard]==0.30.5",
+]
