@@ -20,7 +20,7 @@ from services import email_storage
 from services.ai_writer import generate_email, generate_smart_email, score_lead
 
 # ------------------- Config -------------------
-os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"  # for localhost dev
+
 TOKEN_PATH = "token.pkl"
 CLIENT_SECRET_FILE = "client_secret.json"
 FRONTEND_URL = "https://mailmorph-com.vercel.app"
