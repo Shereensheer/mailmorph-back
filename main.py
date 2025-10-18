@@ -117,7 +117,7 @@ def auth_login():
             "https://www.googleapis.com/auth/gmail.modify",
             "https://www.googleapis.com/auth/gmail.send",
         ],
-        redirect_uri="http://localhost:8000/auth/callback",
+        redirect_uri="https://mailmorph-back-production.up.railway.app/auth/callback",
     )
     auth_url, _ = flow.authorization_url(
         access_type="offline", include_granted_scopes="true"
@@ -134,7 +134,7 @@ def auth_callback(request: Request):
             "https://www.googleapis.com/auth/gmail.modify",
             "https://www.googleapis.com/auth/gmail.send",
         ],
-        redirect_uri="http://localhost:8000/auth/callback",
+        redirect_uri="https://mailmorph-back-production.up.railway.app/auth/callback",
     )
     try:
         flow.fetch_token(authorization_response=str(request.url))
@@ -541,7 +541,7 @@ from services.ai_writer import generate_email, generate_smart_email, score_lead
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"  # for localhost dev
 TOKEN_PATH = "token.pkl"
 CLIENT_SECRET_FILE = "client_secret.json"
-FRONTEND_URL = "http://localhost:3000"
+FRONTEND_URL = "https://mailmorph-com.vercel.app/"
 LEADS_FILE = "leads.pkl"
 USERS_FILE = "users.json"
 UPLOAD_DIR = "uploads"
@@ -635,7 +635,7 @@ def auth_login():
             "https://www.googleapis.com/auth/gmail.modify",
             "https://www.googleapis.com/auth/gmail.send",
         ],
-        redirect_uri="http://localhost:8000/auth/callback",
+        redirect_uri="https://mailmorph-back-production.up.railway.app/auth/callback",
     )
     auth_url, _ = flow.authorization_url(
         access_type="offline", include_granted_scopes="true"
@@ -652,7 +652,7 @@ def auth_callback(request: Request):
             "https://www.googleapis.com/auth/gmail.modify",
             "https://www.googleapis.com/auth/gmail.send",
         ],
-        redirect_uri="http://localhost:8000/auth/callback",
+        redirect_uri="https://mailmorph-back-production.up.railway.app/auth/callback",
     )
     try:
         flow.fetch_token(authorization_response=str(request.url))
@@ -1016,8 +1016,8 @@ async def create_checkout(data: CheckoutRequest):
             payment_method_types=["card"],
             line_items=line_items,
             mode="payment",
-            success_url="http://localhost:3000/success",
-            cancel_url="http://localhost:3000/cart",
+            success_url="https://mailmorph-com.vercel.app/success",
+            cancel_url="https://mailmorph-com.vercel.app/cart",
             customer_email=data.email,
         )
         return {"checkout_url": session.url}
