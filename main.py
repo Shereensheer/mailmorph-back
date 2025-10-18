@@ -1,5 +1,9 @@
 
 
+
+
+
+
 import os
 import pickle
 import json
@@ -20,10 +24,10 @@ from services import email_storage
 from services.ai_writer import generate_email, generate_smart_email, score_lead
 
 # ------------------- Config -------------------
-
+os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"  # for localhost dev
 TOKEN_PATH = "token.pkl"
 CLIENT_SECRET_FILE = "client_secret.json"
-FRONTEND_URL = "https://mailmorph-com.vercel.app"
+FRONTEND_URL = "http://localhost:3000"
 LEADS_FILE = "leads.pkl"
 USERS_FILE = "users.json"
 UPLOAD_DIR = "uploads"
@@ -34,7 +38,7 @@ os.makedirs(UPLOAD_DIR, exist_ok=True)
 app = FastAPI(title="MailMorph API")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://mailmorph-com.vercel.app"],  # restrict in production
+    allow_origins=["*"],  # restrict in production
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -117,7 +121,7 @@ def auth_login():
             "https://www.googleapis.com/auth/gmail.modify",
             "https://www.googleapis.com/auth/gmail.send",
         ],
-        redirect_uri="https://mailmorph-back-production.up.railway.app/auth/callback",
+        redirect_uri="http://localhost:8000/auth/callback",
     )
     auth_url, _ = flow.authorization_url(
         access_type="offline", include_granted_scopes="true"
@@ -134,7 +138,7 @@ def auth_callback(request: Request):
             "https://www.googleapis.com/auth/gmail.modify",
             "https://www.googleapis.com/auth/gmail.send",
         ],
-        redirect_uri="https://mailmorph-back-production.up.railway.app/auth/callback",
+        redirect_uri="http://localhost:8000/auth/callback",
     )
     try:
         flow.fetch_token(authorization_response=str(request.url))
@@ -635,7 +639,7 @@ def auth_login():
             "https://www.googleapis.com/auth/gmail.modify",
             "https://www.googleapis.com/auth/gmail.send",
         ],
-        redirect_uri="https://mailmorph-back-production.up.railway.app/auth/callback",
+        redirect_uri="http://localhost:8000/auth/callback",
     )
     auth_url, _ = flow.authorization_url(
         access_type="offline", include_granted_scopes="true"
@@ -652,7 +656,7 @@ def auth_callback(request: Request):
             "https://www.googleapis.com/auth/gmail.modify",
             "https://www.googleapis.com/auth/gmail.send",
         ],
-        redirect_uri="https://mailmorph-back-production.up.railway.app/auth/callback",
+        redirect_uri="http://localhost:8000/auth/callback",
     )
     try:
         flow.fetch_token(authorization_response=str(request.url))
@@ -1161,20 +1165,19 @@ def clear_replies():
     return {"detail": "All replies cleared"}
 
 
+# import os
+# import uvicorn
+# from fastapi import FastAPI
 
-import os
-import uvicorn
-from fastapi import FastAPI
+# app = FastAPI()
 
-app = FastAPI()
+# @app.get("/")
+# def home():
+#     return {"message": "MailMorph backend running successfully on Railway!"}
 
-@app.get("/")
-def home():
-    return {"message": "MailMorph backend running successfully on Railway!"}
-
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 8000))
-    uvicorn.run("main:app", host="0.0.0.0", port=port)   
+# if __name__ == "__main__":
+#     port = int(os.environ.get("PORT", 8000))
+#     uvicorn.run("main:app", host="0.0.0.0", port=port)   
 
 
 
