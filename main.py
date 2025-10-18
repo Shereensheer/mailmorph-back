@@ -23,11 +23,18 @@ from services.ai_writer import generate_email, generate_smart_email, score_lead
 
 TOKEN_PATH = "token.pkl"
 import json
+import json
+import os
 
-CLIENT_SECRET_FILE = "/tmp/client_secret.json"
-if os.getenv("GOOGLE_CLIENT_SECRET_JSON"):
-    with open(CLIENT_SECRET_FILE, "w") as f:
-        f.write(os.getenv("GOOGLE_CLIENT_SECRET_JSON"))
+CLIENT_SECRET_FILE = "client_secret.json"
+
+# Agar file na ho to env se likh do
+if not os.path.exists(CLIENT_SECRET_FILE):
+    secret_content = os.getenv("CLIENT_SECRET_JSON")
+    if secret_content:
+        with open(CLIENT_SECRET_FILE, "w") as f:
+            f.write(secret_content)
+
 
 FRONTEND_URL = "https://mailmorph-com.vercel.app"
 LEADS_FILE = "leads.pkl"
